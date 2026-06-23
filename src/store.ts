@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import type { NodeType } from './data'
 
 export type AppView = 'manuscrito' | 'grafo' | 'quadro'
-export type RootView = 'landing' | 'app'
+export type RootView = 'landing' | 'login' | 'app'
 
 interface AppState {
   rootView: RootView
@@ -12,6 +12,7 @@ interface AppState {
 
   goToApp: (view: AppView) => void
   goToLanding: () => void
+  goToLogin: () => void
   setAppView: (view: AppView) => void
   selectNode: (id: string | null) => void
   toggleType: (type: NodeType) => void
@@ -25,6 +26,7 @@ export const useStore = create<AppState>((set) => ({
 
   goToApp: (view) => set({ rootView: 'app', appView: view }),
   goToLanding: () => set({ rootView: 'landing', selectedNodeId: null }),
+  goToLogin: () => set({ rootView: 'login' }),
   setAppView: (view) => set({ appView: view, selectedNodeId: null }),
   selectNode: (id) => set((s) => ({ selectedNodeId: s.selectedNodeId === id ? null : id })),
   toggleType: (type) =>

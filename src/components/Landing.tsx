@@ -49,6 +49,7 @@ function ResourceCard({ icon, title, desc }: { icon: React.ReactNode; title: str
 
 export default function Landing() {
   const goToApp = useStore((s) => s.goToApp)
+  const goToLogin = useStore((s) => s.goToLogin)
 
   return (
     <div style={{ fontFamily: "'Hanken Grotesk',sans-serif", color: '#2A241D', background: '#F4EDE1', minHeight: '100vh' }}>
@@ -62,7 +63,7 @@ export default function Landing() {
             <HoverLink onClick={() => goToApp('manuscrito')}>Escrita</HoverLink>
           </nav>
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 20 }}>
-            <HoverLink onClick={() => goToApp('grafo')} style={{ fontSize: 15, fontWeight: 500, color: '#2A241D' }}>Entrar</HoverLink>
+            <HoverLink onClick={goToLogin} style={{ fontSize: 15, fontWeight: 500, color: '#2A241D' }}>Entrar</HoverLink>
             <HoverBtn onClick={() => goToApp('manuscrito')}
               style={{ fontSize: 15, fontWeight: 600, color: '#F4EDE1', background: '#2A241D', padding: '11px 20px', borderRadius: 11, transition: 'background .18s' }}
               hoverStyle={{ background: '#B65C3F' }}>
