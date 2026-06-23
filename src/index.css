@@ -1,0 +1,48 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'Hanken Grotesk', -apple-system, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+#root { min-height: 100vh; }
+
+:root {
+  --ink:           #2A241D;
+  --ink-2:         #3F362B;
+  --text-soft:     #574B3D;
+  --muted:         #8A7C6B;
+  --muted-2:       #9C8E7B;
+  --line:          #E2D8C6;
+  --line-2:        #E7DDCB;
+  --paper:         #F4EDE1;
+  --paper-2:       #EFE7D8;
+  --paper-3:       #E8DEC9;
+  --paper-4:       #EBE0CD;
+  --cream:         #FBF7EF;
+  --terracotta:    #B65C3F;
+  --terracotta-dp: #9E4A30;
+  --ochre:         #C2924A;
+  --moss:          #6E7350;
+  --slate:         #5F7470;
+  --gold:          #E8C98C;
+  --gold-hover:    #F0D49A;
+  --footer-bg:     #211C16;
+  --edge-color:    #C9BBA3;
+  --grid-dot:      rgba(138,124,107,.2);
+}
+
+::selection { background: var(--terracotta); color: #F8F3E9; }
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-thumb {
+  background: #D8CBB6;
+  border-radius: 6px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; }
+h1, h2, h3, h4 { margin: 0; }
+p { margin: 0; }
