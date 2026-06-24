@@ -42,6 +42,31 @@ body {
   background-clip: content-box;
 }
 
+/* ── Dark theme (applied via html.dark-app class) ── */
+html.dark-app {
+  --ink:           #EFE3CE;
+  --ink-2:         #DDD0B6;
+  --text-soft:     #BCAE92;
+  --muted:         #7A6E5E;
+  --muted-2:       #6A5E50;
+  --line:          #352D22;
+  --line-2:        #3E3426;
+  --paper:         #1C1710;
+  --paper-2:       #231C13;
+  --paper-3:       #2B2316;
+  --paper-4:       #332A1C;
+  --cream:         #28200F;
+  --terracotta:    #C96B4A;
+  --terracotta-dp: #DC7D5C;
+  --ochre:         #C9964E;
+  --moss:          #8A9C62;
+  --slate:         #7A9490;
+  --edge-color:    #4E4232;
+  --grid-dot:      rgba(200,175,140,.1);
+}
+
+html.dark-app ::-webkit-scrollbar-thumb { background: #4A3E2E; }
+
 a { text-decoration: none; color: inherit; }
 button { font-family: inherit; cursor: pointer; border: none; }
 h1, h2, h3, h4 { margin: 0; }

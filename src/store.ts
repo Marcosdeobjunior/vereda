@@ -9,6 +9,7 @@ interface AppState {
   appView: AppView
   selectedNodeId: string | null
   hiddenTypes: Set<NodeType>
+  darkMode: boolean
 
   goToApp: (view: AppView) => void
   goToLanding: () => void
@@ -16,6 +17,7 @@ interface AppState {
   setAppView: (view: AppView) => void
   selectNode: (id: string | null) => void
   toggleType: (type: NodeType) => void
+  toggleDarkMode: () => void
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -23,6 +25,7 @@ export const useStore = create<AppState>((set) => ({
   appView: 'grafo',
   selectedNodeId: null,
   hiddenTypes: new Set(),
+  darkMode: false,
 
   goToApp: (view) => set({ rootView: 'app', appView: view }),
   goToLanding: () => set({ rootView: 'landing', selectedNodeId: null }),
@@ -35,4 +38,5 @@ export const useStore = create<AppState>((set) => ({
       next.has(type) ? next.delete(type) : next.add(type)
       return { hiddenTypes: next }
     }),
+  toggleDarkMode: () => set((s) => ({ darkMode: !s.darkMode })),
 }))
