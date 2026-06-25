@@ -113,12 +113,6 @@ export default function AppShell() {
 
         <span style={{ width: 33, height: 33, borderRadius: '50%', background: 'var(--terracotta)', color: '#F4EDE1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12.5, fontWeight: 600, flexShrink: 0 }}>JM</span>
 
-        <button onClick={goToLanding}
-          style={{ fontSize: 13.5, fontWeight: 500, color: 'var(--text-soft)', background: 'transparent', border: '1px solid var(--line)', padding: '7px 13px', borderRadius: 9, cursor: 'pointer', flexShrink: 0, transition: 'border-color .15s,color .15s' }}
-          onMouseEnter={e => { const el = e.currentTarget; el.style.borderColor = 'var(--terracotta)'; el.style.color = 'var(--terracotta)' }}
-          onMouseLeave={e => { const el = e.currentTarget; el.style.borderColor = 'var(--line)'; el.style.color = 'var(--text-soft)' }}>
-          Ver site
-        </button>
       </div>
 
       <div style={{ flex: 1, display: 'flex', minHeight: 0 }}>
