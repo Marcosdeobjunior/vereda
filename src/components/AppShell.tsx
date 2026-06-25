@@ -58,7 +58,7 @@ function DarkToggle() {
 }
 
 export default function AppShell() {
-  const { appView, setAppView, goToLanding, selectNode, darkMode } = useStore()
+  const { appView, setAppView, selectNode, darkMode } = useStore()
   const [search, setSearch] = useState('')
 
   useEffect(() => {
