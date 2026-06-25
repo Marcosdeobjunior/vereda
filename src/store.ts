@@ -25,7 +25,7 @@ export const useStore = create<AppState>((set) => ({
   appView: 'grafo',
   selectedNodeId: null,
   hiddenTypes: new Set(),
-  darkMode: false,
+  darkMode: localStorage.getItem('vereda-darkMode') === 'true',
 
   goToApp: (view) => set({ rootView: 'app', appView: view }),
   goToLanding: () => set({ rootView: 'landing', selectedNodeId: null }),
@@ -38,5 +38,9 @@ export const useStore = create<AppState>((set) => ({
       next.has(type) ? next.delete(type) : next.add(type)
       return { hiddenTypes: next }
     }),
-  toggleDarkMode: () => set((s) => ({ darkMode: !s.darkMode })),
+  toggleDarkMode: () => set((s) => {
+    const next = !s.darkMode
+    localStorage.setItem('vereda-darkMode', String(next))
+    return { darkMode: next }
+  }),
 }))
