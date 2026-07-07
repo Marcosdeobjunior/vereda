@@ -166,10 +166,17 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* O GRAFO — seção interativa */}
-      <section id="grafo" style={{ background: '#EFE7D8', borderTop: '1px solid #E5DBCA', borderBottom: '1px solid #E5DBCA', marginTop: 36, scrollMarginTop: 72 }}>
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '84px 32px', display: 'grid', gridTemplateColumns: '.92fr 1.08fr', gap: 60, alignItems: 'center' }}>
-          <div>
+      {/* O GRAFO — seção interativa, grafo em loop no background */}
+      <section id="grafo" style={{ position: 'relative', minHeight: 620, background: '#EFE7D8', borderTop: '1px solid #E5DBCA', borderBottom: '1px solid #E5DBCA', marginTop: 36, scrollMarginTop: 72, overflow: 'hidden' }}>
+        {/* Grafo animado em looping, atrás do conteúdo */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <LandingGraphDemo autoplay />
+        </div>
+        {/* Esmaecimento para manter o texto legível sobre o grafo */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, #EFE7D8 0%, #EFE7D8 34%, rgba(239,231,216,.75) 52%, rgba(239,231,216,0) 72%)', pointerEvents: 'none' }} />
+
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '84px 32px' }}>
+          <div style={{ maxWidth: 480 }}>
             <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12.5, letterSpacing: '.16em', color: '#6E7350', textTransform: 'uppercase', marginBottom: 18 }}>O grafo</div>
             <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 42, lineHeight: 1.1, letterSpacing: '-.01em', marginBottom: 18, color: '#2A241D' }}>
               Tudo na sua história está conectado. Agora você vê como.
@@ -190,22 +197,11 @@ export default function Landing() {
                 </div>
               ))}
             </div>
-            <div style={{ background: '#E8DEC9', borderRadius: 12, padding: '14px 16px', fontSize: 13.5, color: '#574B3D', lineHeight: 1.6, marginBottom: 24 }}>
-              <b style={{ fontWeight: 600 }}>💡 Demo ao lado:</b> clique nos nós do grafo para ver as conexões e detalhes de cada elemento da história.
-            </div>
             <HoverBtn onClick={() => goToApp('grafo')}
               style={{ fontSize: 15, fontWeight: 600, color: '#2A241D', background: 'transparent', border: '1.5px solid #C9B79A', padding: '12px 22px', borderRadius: 12, transition: 'border .15s,background .15s' }}
               hoverStyle={{ border: '1.5px solid #6E7350', background: '#E8DEC9' }}>
               Explorar o grafo completo →
             </HoverBtn>
-          </div>
-          {/* Demo interativa */}
-          <div style={{ background: '#FBF7EF', border: '1px solid #E2D8C6', borderRadius: 18, boxShadow: '0 24px 50px -22px rgba(42,36,29,.3)', overflow: 'hidden' }}>
-            <div style={{ background: '#F4EDE1', borderBottom: '1px solid #EBE0CD', display: 'flex', alignItems: 'center', gap: 7, padding: '12px 16px' }}>
-              {[0,1,2].map(i => <span key={i} style={{ width: 11, height: 11, borderRadius: '50%', background: '#D9CDBA' }} />)}
-              <span style={{ marginLeft: 10, fontFamily: "'IBM Plex Mono',monospace", fontSize: 11.5, color: '#8A7C6B' }}>A Casa de Barro — grafo interativo</span>
-            </div>
-            <LandingGraphDemo />
           </div>
         </div>
       </section>
