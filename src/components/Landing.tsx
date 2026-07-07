@@ -168,14 +168,12 @@ export default function Landing() {
 
       {/* O GRAFO — seção interativa, grafo em loop no background */}
       <section id="grafo" style={{ position: 'relative', minHeight: 620, background: '#EFE7D8', borderTop: '1px solid #E5DBCA', borderBottom: '1px solid #E5DBCA', marginTop: 36, scrollMarginTop: 72, overflow: 'hidden' }}>
-        {/* Grafo animado em looping, atrás do conteúdo */}
-        <div style={{ position: 'absolute', inset: 0 }}>
-          <LandingGraphDemo autoplay />
-        </div>
-        {/* Esmaecimento para manter o texto legível sobre o grafo */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, #EFE7D8 0%, #EFE7D8 34%, rgba(239,231,216,.75) 52%, rgba(239,231,216,0) 72%)', pointerEvents: 'none' }} />
-
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '84px 32px' }}>
+        {/*
+          A grade abaixo reserva a mesma largura de coluna usada pelo texto, então a
+          segunda coluna (onde o grafo vive) nunca invade a área do texto, em
+          qualquer largura de tela — ao contrário de usar uma % fixa da seção inteira.
+        */}
+        <div style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '84px 32px', display: 'grid', gridTemplateColumns: '.92fr 1.08fr', gap: 60 }}>
           <div style={{ maxWidth: 480 }}>
             <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12.5, letterSpacing: '.16em', color: '#6E7350', textTransform: 'uppercase', marginBottom: 18 }}>O grafo</div>
             <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 42, lineHeight: 1.1, letterSpacing: '-.01em', marginBottom: 18, color: '#2A241D' }}>
@@ -202,6 +200,14 @@ export default function Landing() {
               hoverStyle={{ border: '1.5px solid #6E7350', background: '#E8DEC9' }}>
               Explorar o grafo completo →
             </HoverBtn>
+          </div>
+          {/* Coluna do grafo: vazia no fluxo normal, o grafo é um filho absoluto que sangra até as bordas da seção */}
+          <div style={{ position: 'relative' }}>
+            <div style={{ position: 'absolute', top: -84, bottom: -84, left: 0, right: 0 }}>
+              <LandingGraphDemo autoplay />
+            </div>
+            {/* Esmaecimento suave na costura entre o texto e o grafo */}
+            <div style={{ position: 'absolute', top: -84, bottom: -84, left: 0, width: 70, background: 'linear-gradient(90deg, #EFE7D8 0%, rgba(239,231,216,0) 100%)', pointerEvents: 'none' }} />
           </div>
         </div>
       </section>
