@@ -173,31 +173,26 @@ export default function Landing() {
           <LandingGraphDemo autoplay />
         </div>
 
-        {/* Painel de texto flutuando por cima do grafo */}
+        {/* Texto flutuando por cima do grafo, no mesmo estilo do design original (sem cartão/blur) */}
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', padding: '84px 32px' }}>
-          <div style={{
-            textAlign: 'center', maxWidth: 560,
-            background: 'rgba(251,247,239,.8)', backdropFilter: 'blur(14px) saturate(1.1)',
-            border: '1px solid rgba(226,216,198,.8)', borderRadius: 20,
-            padding: '42px 40px', boxShadow: '0 26px 60px -20px rgba(42,36,29,.3)',
-          }}>
+          <div style={{ maxWidth: 480 }}>
             <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12.5, letterSpacing: '.16em', color: '#6E7350', textTransform: 'uppercase', marginBottom: 18 }}>O grafo</div>
-            <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 38, lineHeight: 1.12, letterSpacing: '-.01em', marginBottom: 16, color: '#2A241D' }}>
+            <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 42, lineHeight: 1.1, letterSpacing: '-.01em', marginBottom: 18, color: '#2A241D' }}>
               Tudo na sua história está conectado. Agora você vê como.
             </h2>
-            <p style={{ fontSize: 16, lineHeight: 1.6, color: '#574B3D', marginBottom: 26 }}>
+            <p style={{ fontSize: 17, lineHeight: 1.62, color: '#574B3D', marginBottom: 28 }}>
               Cada personagem, cena, lugar e ideia vira um nó. As ligações que você cria desenham o mapa do enredo — e revelam o que estava escondido entre as linhas.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 26, textAlign: 'left' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 28 }}>
               {([
                 ['#B65C3F', 'Personagens', 'Quem se cruza com quem, quando e por quê.'],
                 ['#C2924A', 'Cenas', 'A ordem dos acontecimentos e seus fios narrativos.'],
                 ['#6E7350', 'Locais', 'A geografia do seu mundo, física e emocional.'],
                 ['#5F7470', 'Ideias', 'Temas e imagens que costuram a história toda.'],
               ] as [string, string, string][]).map(([color, label, desc]) => (
-                <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-                  <span style={{ width: 12, height: 12, borderRadius: '50%', background: color, flexShrink: 0, marginTop: 4 }} />
-                  <span style={{ fontSize: 14.5, color: '#3F362B', lineHeight: 1.5 }}><b style={{ fontWeight: 600 }}>{label}</b> — {desc}</span>
+                <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 13 }}>
+                  <span style={{ width: 13, height: 13, borderRadius: '50%', background: color, flexShrink: 0, marginTop: 3 }} />
+                  <span style={{ fontSize: 15.5, color: '#3F362B' }}><b style={{ fontWeight: 600 }}>{label}</b> — {desc}</span>
                 </div>
               ))}
             </div>
