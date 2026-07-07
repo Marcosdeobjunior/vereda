@@ -166,46 +166,47 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* O GRAFO — seção interativa, grafo em loop ocupando toda a largura da seção */}
+      {/* O GRAFO — grafo animado em loop, ocupando toda a largura da seção, com o texto flutuando por cima num painel legível */}
       <section id="grafo" style={{ position: 'relative', background: '#EFE7D8', borderTop: '1px solid #E5DBCA', borderBottom: '1px solid #E5DBCA', marginTop: 36, scrollMarginTop: 72, overflow: 'hidden' }}>
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '84px 32px 0' }}>
-          <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
+        {/* Grafo de fundo: largura total da seção, centralizado verticalmente */}
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, transform: 'translateY(-50%)', width: '100%', aspectRatio: GRAPH_ASPECT_RATIO }}>
+          <LandingGraphDemo autoplay />
+        </div>
+
+        {/* Painel de texto flutuando por cima do grafo */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center', padding: '84px 32px' }}>
+          <div style={{
+            textAlign: 'center', maxWidth: 560,
+            background: 'rgba(251,247,239,.8)', backdropFilter: 'blur(14px) saturate(1.1)',
+            border: '1px solid rgba(226,216,198,.8)', borderRadius: 20,
+            padding: '42px 40px', boxShadow: '0 26px 60px -20px rgba(42,36,29,.3)',
+          }}>
             <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12.5, letterSpacing: '.16em', color: '#6E7350', textTransform: 'uppercase', marginBottom: 18 }}>O grafo</div>
-            <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 42, lineHeight: 1.1, letterSpacing: '-.01em', marginBottom: 18, color: '#2A241D' }}>
+            <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 38, lineHeight: 1.12, letterSpacing: '-.01em', marginBottom: 16, color: '#2A241D' }}>
               Tudo na sua história está conectado. Agora você vê como.
             </h2>
-            <p style={{ fontSize: 17, lineHeight: 1.62, color: '#574B3D' }}>
+            <p style={{ fontSize: 16, lineHeight: 1.6, color: '#574B3D', marginBottom: 26 }}>
               Cada personagem, cena, lugar e ideia vira um nó. As ligações que você cria desenham o mapa do enredo — e revelam o que estava escondido entre as linhas.
             </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 24, maxWidth: 980, margin: '36px auto 0' }}>
-            {([
-              ['#B65C3F', 'Personagens', 'Quem se cruza com quem, quando e por quê.'],
-              ['#C2924A', 'Cenas', 'A ordem dos acontecimentos e seus fios narrativos.'],
-              ['#6E7350', 'Locais', 'A geografia do seu mundo, física e emocional.'],
-              ['#5F7470', 'Ideias', 'Temas e imagens que costuram a história toda.'],
-            ] as [string, string, string][]).map(([color, label, desc]) => (
-              <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 11 }}>
-                <span style={{ width: 12, height: 12, borderRadius: '50%', background: color, flexShrink: 0, marginTop: 4 }} />
-                <span style={{ fontSize: 14.5, color: '#3F362B', lineHeight: 1.5 }}><b style={{ fontWeight: 600 }}>{label}</b> — {desc}</span>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ textAlign: 'center', margin: '32px 0 44px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 26, textAlign: 'left' }}>
+              {([
+                ['#B65C3F', 'Personagens', 'Quem se cruza com quem, quando e por quê.'],
+                ['#C2924A', 'Cenas', 'A ordem dos acontecimentos e seus fios narrativos.'],
+                ['#6E7350', 'Locais', 'A geografia do seu mundo, física e emocional.'],
+                ['#5F7470', 'Ideias', 'Temas e imagens que costuram a história toda.'],
+              ] as [string, string, string][]).map(([color, label, desc]) => (
+                <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                  <span style={{ width: 12, height: 12, borderRadius: '50%', background: color, flexShrink: 0, marginTop: 4 }} />
+                  <span style={{ fontSize: 14.5, color: '#3F362B', lineHeight: 1.5 }}><b style={{ fontWeight: 600 }}>{label}</b> — {desc}</span>
+                </div>
+              ))}
+            </div>
             <HoverBtn onClick={() => goToApp('grafo')}
               style={{ fontSize: 15, fontWeight: 600, color: '#2A241D', background: 'transparent', border: '1.5px solid #C9B79A', padding: '12px 22px', borderRadius: 12, transition: 'border .15s,background .15s' }}
               hoverStyle={{ border: '1.5px solid #6E7350', background: '#E8DEC9' }}>
               Explorar o grafo completo →
             </HoverBtn>
           </div>
-        </div>
-
-        {/* Grafo animado, ocupando toda a largura da seção — a altura é derivada
-            da própria proporção do grafo, então ele nunca é cortado nem sobra vazio */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: GRAPH_ASPECT_RATIO }}>
-          <LandingGraphDemo autoplay />
         </div>
       </section>
 
