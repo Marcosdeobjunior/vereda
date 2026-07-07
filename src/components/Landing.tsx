@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { useStore } from '../store'
 import Logo from './Logo'
 import MiniGraph from './MiniGraph'
-import LandingGraphDemo from './LandingGraphDemo'
+import LandingGraphDemo, { GRAPH_ASPECT_RATIO } from './LandingGraphDemo'
 
 /* ── helpers ───────────────────────────────────────────── */
 function scrollTo(id: string) {
@@ -166,49 +166,46 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* O GRAFO — seção interativa, grafo em loop no background */}
-      <section id="grafo" style={{ position: 'relative', minHeight: 620, background: '#EFE7D8', borderTop: '1px solid #E5DBCA', borderBottom: '1px solid #E5DBCA', marginTop: 36, scrollMarginTop: 72, overflow: 'hidden' }}>
-        {/*
-          A grade abaixo reserva a mesma largura de coluna usada pelo texto, então a
-          segunda coluna (onde o grafo vive) nunca invade a área do texto, em
-          qualquer largura de tela — ao contrário de usar uma % fixa da seção inteira.
-        */}
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 1180, margin: '0 auto', padding: '84px 32px', display: 'grid', gridTemplateColumns: '.92fr 1.08fr', gap: 60 }}>
-          <div style={{ maxWidth: 480 }}>
+      {/* O GRAFO — seção interativa, grafo em loop ocupando toda a largura da seção */}
+      <section id="grafo" style={{ position: 'relative', background: '#EFE7D8', borderTop: '1px solid #E5DBCA', borderBottom: '1px solid #E5DBCA', marginTop: 36, scrollMarginTop: 72, overflow: 'hidden' }}>
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '84px 32px 0' }}>
+          <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
             <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12.5, letterSpacing: '.16em', color: '#6E7350', textTransform: 'uppercase', marginBottom: 18 }}>O grafo</div>
             <h2 style={{ fontFamily: "'Newsreader',serif", fontWeight: 500, fontSize: 42, lineHeight: 1.1, letterSpacing: '-.01em', marginBottom: 18, color: '#2A241D' }}>
               Tudo na sua história está conectado. Agora você vê como.
             </h2>
-            <p style={{ fontSize: 17, lineHeight: 1.62, color: '#574B3D', marginBottom: 28 }}>
+            <p style={{ fontSize: 17, lineHeight: 1.62, color: '#574B3D' }}>
               Cada personagem, cena, lugar e ideia vira um nó. As ligações que você cria desenham o mapa do enredo — e revelam o que estava escondido entre as linhas.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 28 }}>
-              {([
-                ['#B65C3F', 'Personagens', 'Quem se cruza com quem, quando e por quê.'],
-                ['#C2924A', 'Cenas', 'A ordem dos acontecimentos e seus fios narrativos.'],
-                ['#6E7350', 'Locais', 'A geografia do seu mundo, física e emocional.'],
-                ['#5F7470', 'Ideias', 'Temas e imagens que costuram a história toda.'],
-              ] as [string, string, string][]).map(([color, label, desc]) => (
-                <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 13 }}>
-                  <span style={{ width: 13, height: 13, borderRadius: '50%', background: color, flexShrink: 0, marginTop: 3 }} />
-                  <span style={{ fontSize: 15.5, color: '#3F362B' }}><b style={{ fontWeight: 600 }}>{label}</b> — {desc}</span>
-                </div>
-              ))}
-            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 24, maxWidth: 980, margin: '36px auto 0' }}>
+            {([
+              ['#B65C3F', 'Personagens', 'Quem se cruza com quem, quando e por quê.'],
+              ['#C2924A', 'Cenas', 'A ordem dos acontecimentos e seus fios narrativos.'],
+              ['#6E7350', 'Locais', 'A geografia do seu mundo, física e emocional.'],
+              ['#5F7470', 'Ideias', 'Temas e imagens que costuram a história toda.'],
+            ] as [string, string, string][]).map(([color, label, desc]) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 11 }}>
+                <span style={{ width: 12, height: 12, borderRadius: '50%', background: color, flexShrink: 0, marginTop: 4 }} />
+                <span style={{ fontSize: 14.5, color: '#3F362B', lineHeight: 1.5 }}><b style={{ fontWeight: 600 }}>{label}</b> — {desc}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', margin: '32px 0 44px' }}>
             <HoverBtn onClick={() => goToApp('grafo')}
               style={{ fontSize: 15, fontWeight: 600, color: '#2A241D', background: 'transparent', border: '1.5px solid #C9B79A', padding: '12px 22px', borderRadius: 12, transition: 'border .15s,background .15s' }}
               hoverStyle={{ border: '1.5px solid #6E7350', background: '#E8DEC9' }}>
               Explorar o grafo completo →
             </HoverBtn>
           </div>
-          {/* Coluna do grafo: vazia no fluxo normal, o grafo é um filho absoluto que sangra até as bordas da seção */}
-          <div style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', top: -84, bottom: -84, left: 0, right: 0 }}>
-              <LandingGraphDemo autoplay />
-            </div>
-            {/* Esmaecimento suave na costura entre o texto e o grafo */}
-            <div style={{ position: 'absolute', top: -84, bottom: -84, left: 0, width: 70, background: 'linear-gradient(90deg, #EFE7D8 0%, rgba(239,231,216,0) 100%)', pointerEvents: 'none' }} />
-          </div>
+        </div>
+
+        {/* Grafo animado, ocupando toda a largura da seção — a altura é derivada
+            da própria proporção do grafo, então ele nunca é cortado nem sobra vazio */}
+        <div style={{ position: 'relative', width: '100%', aspectRatio: GRAPH_ASPECT_RATIO }}>
+          <LandingGraphDemo autoplay />
         </div>
       </section>
 

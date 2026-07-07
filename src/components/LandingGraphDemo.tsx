@@ -1,13 +1,23 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+
+/*
+  Proporção larga (tipo banner) — o viewBox é bem mais largo que alto para que,
+  quando o wrapper usa aspect-ratio: VIEW_W/VIEW_H em 100% da largura da seção,
+  a altura resultante fique num tamanho de banner razoável em vez de esticar
+  para uma seção quase quadrada.
+*/
+export const GRAPH_ASPECT_RATIO = '1250 / 392'
+const VIEW_W = 1250
+const VIEW_H = 392
 
 const DEMO_NODES = [
-  { id: 'casa', label: 'A Casa', type: 'local', color: '#6E7350', x: 250, y: 170, r: 22, desc: 'A casa de barro centenária. Centro gravitacional de toda a narrativa.' },
-  { id: 'joana', label: 'Joana', type: 'personagem', color: '#B65C3F', x: 250, y: 260, r: 17, desc: 'Protagonista. Filha do dono da fazenda, carrega o peso do silêncio familiar.' },
-  { id: 'ines', label: 'Inês', type: 'personagem', color: '#B65C3F', x: 148, y: 90, r: 13, desc: 'Irmã mais nova de Joana. Sonha em partir para a cidade.' },
-  { id: 'acude', label: 'Açude', type: 'local', color: '#6E7350', x: 380, y: 110, r: 15, desc: 'O açude está secando. Sua diminuição espelha o colapso familiar.' },
-  { id: 'aurora', label: 'Aurora', type: 'personagem', color: '#B65C3F', x: 340, y: 268, r: 15, desc: 'Matriarca da família. Guarda segredos sobre o passado do açude.' },
-  { id: 'seca', label: 'A Seca', type: 'cena', color: '#C2924A', x: 110, y: 218, r: 13, desc: 'Cena de abertura. Joana observa o açude baixar pela primeira vez.' },
-  { id: 'memoria', label: 'Memória', type: 'ideia', color: '#5F7470', x: 432, y: 218, r: 12, desc: 'Tema central: o que herdamos sem escolher, o que esquecemos sem querer.' },
+  { id: 'casa', label: 'A Casa', type: 'local', color: '#6E7350', x: 580, y: 170, r: 22, desc: 'A casa de barro centenária. Centro gravitacional de toda a narrativa.' },
+  { id: 'joana', label: 'Joana', type: 'personagem', color: '#B65C3F', x: 580, y: 260, r: 17, desc: 'Protagonista. Filha do dono da fazenda, carrega o peso do silêncio familiar.' },
+  { id: 'ines', label: 'Inês', type: 'personagem', color: '#B65C3F', x: 343, y: 90, r: 13, desc: 'Irmã mais nova de Joana. Sonha em partir para a cidade.' },
+  { id: 'acude', label: 'Açude', type: 'local', color: '#6E7350', x: 880, y: 110, r: 15, desc: 'O açude está secando. Sua diminuição espelha o colapso familiar.' },
+  { id: 'aurora', label: 'Aurora', type: 'personagem', color: '#B65C3F', x: 787, y: 268, r: 15, desc: 'Matriarca da família. Guarda segredos sobre o passado do açude.' },
+  { id: 'seca', label: 'A Seca', type: 'cena', color: '#C2924A', x: 255, y: 218, r: 13, desc: 'Cena de abertura. Joana observa o açude baixar pela primeira vez.' },
+  { id: 'memoria', label: 'Memória', type: 'ideia', color: '#5F7470', x: 1000, y: 218, r: 12, desc: 'Tema central: o que herdamos sem escolher, o que esquecemos sem querer.' },
 ]
 
 const DEMO_EDGES = [
@@ -28,8 +38,31 @@ interface LandingGraphDemoProps {
 
 export default function LandingGraphDemo({ autoplay = false }: LandingGraphDemoProps) {
   const [selected, setSelected] = useState<string | null>(null)
-  const [cursor, setCursor] = useState<{ x: number; y: number; clicking: boolean }>({ x: 250, y: 170, clicking: false })
+  const [cursor, setCursor] = useState<{ x: number; y: number; clicking: boolean }>({ x: 580, y: 170, clicking: false })
   const stepRef = useRef(0)
+  const outerRef = useRef<HTMLDivElement>(null)
+  const [stage, setStage] = useState({ w: VIEW_W, h: VIEW_H })
+
+  // Mede o container real e calcula o maior palco 540:392 que cabe inteiro nele
+  // (equivalente a object-fit: contain), para que os nós em % nunca vazem do
+  // container nem se desalinhem das linhas do SVG, seja qual for o formato da seção.
+  useLayoutEffect(() => {
+    const el = outerRef.current
+    if (!el) return
+    const ratio = VIEW_W / VIEW_H
+    const measure = () => {
+      const cw = el.clientWidth
+      const ch = el.clientHeight
+      if (!cw || !ch) return
+      const w = cw / ch > ratio ? ch * ratio : cw
+      const h = cw / ch > ratio ? ch : cw / ratio
+      setStage({ w, h })
+    }
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => {
     if (!autoplay) return
@@ -64,6 +97,7 @@ export default function LandingGraphDemo({ autoplay = false }: LandingGraphDemoP
 
   return (
     <div
+      ref={outerRef}
       style={{
         position: 'relative', width: '100%', height: '100%', minHeight: autoplay ? undefined : 392,
         background: '#F4EDE1', backgroundImage: 'radial-gradient(rgba(138,124,107,.2) 1px, transparent 1px)', backgroundSize: '26px 26px',
@@ -72,14 +106,15 @@ export default function LandingGraphDemo({ autoplay = false }: LandingGraphDemoP
       onClick={autoplay ? undefined : () => setSelected(null)}>
 
       {/*
-        Palco com proporção travada em 540:392 (a mesma do viewBox do SVG).
-        Isso garante que os nós/cursor/popup — posicionados em % via HTML —
-        caiam exatamente sobre as linhas do SVG, sem depender da proporção
-        real do container pai (que varia conforme o layout da seção).
+        Palco medido em px (object-fit: contain) — o maior retângulo 540:392 que
+        cabe inteiro no container. Garante que os nós/cursor/popup, posicionados
+        em % via HTML, caiam exatamente sobre as linhas do SVG e nunca vazem do
+        container, seja qual for a proporção real da seção (coluna estreita,
+        faixa larga, etc).
       */}
       <div style={{
         position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-        width: '100%', aspectRatio: '540 / 392',
+        width: stage.w, height: stage.h,
       }}>
 
         {/* Hint */}
@@ -89,7 +124,7 @@ export default function LandingGraphDemo({ autoplay = false }: LandingGraphDemoP
           </div>
         )}
 
-        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} viewBox="0 0 540 392" preserveAspectRatio="none">
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} preserveAspectRatio="none">
           {DEMO_EDGES.map((e, i) => {
             const a = DEMO_NODES.find(n => n.id === e.a)!
             const b = DEMO_NODES.find(n => n.id === e.b)!
@@ -117,8 +152,8 @@ export default function LandingGraphDemo({ autoplay = false }: LandingGraphDemoP
             <div key={node.id} onClick={autoplay ? undefined : e => { e.stopPropagation(); setSelected(isSel ? null : node.id) }}
               style={{
                 position: 'absolute',
-                left: `${(node.x / 540) * 100}%`,
-                top: `${(node.y / 392) * 100}%`,
+                left: `${(node.x / VIEW_W) * 100}%`,
+                top: `${(node.y / VIEW_H) * 100}%`,
                 transform: `translate(-50%, -50%) scale(${isSel ? 1.12 : 1})`,
                 width: node.r * 2, height: node.r * 2,
                 borderRadius: '50%',
@@ -147,8 +182,8 @@ export default function LandingGraphDemo({ autoplay = false }: LandingGraphDemoP
         {autoplay && (
           <div style={{
             position: 'absolute',
-            left: `${(cursor.x / 540) * 100}%`,
-            top: `${(cursor.y / 392) * 100}%`,
+            left: `${(cursor.x / VIEW_W) * 100}%`,
+            top: `${(cursor.y / VIEW_H) * 100}%`,
             transform: `translate(-8%, -12%) scale(${cursor.clicking ? 0.88 : 1})`,
             transition: 'left .7s cubic-bezier(.4,0,.2,1), top .7s cubic-bezier(.4,0,.2,1), transform .15s ease',
             zIndex: 30, pointerEvents: 'none',
